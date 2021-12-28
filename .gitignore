@@ -1,0 +1,7 @@
+*.iml
+out/
+.idea/
+target/
+logs/
+.OS_Store/
+logs/
