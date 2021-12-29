@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<medicines xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.example.com/medicines"
+           xsi:schemaLocation="http://www.example.com/medicines medicines.xsd">
+    <antibiotics id='ID-12523'>
+        <price>25.13</price>
+        <countryOfOrigin>BELARUS</countryOfOrigin>
+        <groupOfAntibiotics>Tetracyclines</groupOfAntibiotics>
+    </antibiotics>
+    <antibiotics id='ID-12896' name='Augmentin'>
+        <countryOfOrigin>RUSSIA</countryOfOrigin>
+        <price>13.16</price>
+        <groupOfAntibiotics>Penicillins</groupOfAntibiotics>
+    </antibiotics>
+    <analgesics id='ID-13158' name='Buprenorphine'>
+        <countryOfOrigin>RUSSIA</countryOfOrigin>
+        <price>62.95</price>
+        <isSteroid>No</isSteroid>
+    </analgesics>
+    <analgesics id='ID-13673'>
+        <countryOfOrigin>BELARUS</countryOfOrigin>
+        <price>56.44</price>
+        <isSteroid>Yes</isSteroid>
+    </analgesics>
+</medicines>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.com/medicines"
+        xmlns:tns="http://www.example.com/medicines" elementFormDefault="qualified">
+    <element name="medicines">
+        <complexType>
+            <sequence>
+                <element ref="tns:medicine" minOccurs="4" maxOccurs="unbounded"/>
+            </sequence>
+        </complexType>
+    </element>
+    <complexType name="medicines">
+        <sequence>
+            <element name="countryOfOrigin">
+                <simpleType>
+                    <restriction base="string">
+                        <enumeration value="BELARUS"/>
+                        <enumeration value="RUSSIA"/>
+                    </restriction>
+                </simpleType>
+            </element>
+            <element name="price" type="double"/>
+        </sequence>
+        <attribute name="id" type="tns:id" use="required"/>
+        <attribute name="name" type="string"/>
+    </complexType>
+    <simpleType name="id">
+        <restriction base="ID">
+            <pattern value="(ID-)[0-9]{5}"/>
+        </restriction>
+    </simpleType>
+    <element name="medicine" type="tns:medicines" abstract="true"/>
+    <element name="antibiotics" type="tns:antibiotics" substitutionGroup="tns:medicine"/>
+    <complexType name="antibiotics">
+        <complexContent>
+            <extension base="tns:medicines">
+                <sequence>
+                    <element name="groupOfAntibiotics" type="string"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <element name="analgesics" type="tns:analgesics" substitutionGroup="tns:medicine"/>
+    <complexType name="analgesics">
+        <complexContent>
+            <extension base="tns:medicines">
+                <sequence>
+                    <element name="isSteroid" type="string"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+</schema>
