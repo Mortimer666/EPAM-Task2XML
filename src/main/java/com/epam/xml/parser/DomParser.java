@@ -27,19 +27,15 @@ public class DomParser implements Parser {
             DocumentBuilder documentBuilder = factory.newDocumentBuilder();
             Document document = documentBuilder.parse(path);
             Element root = document.getDocumentElement();
-
             NodeList antibiotics = root.getElementsByTagName("antibiotics");
             for (int i = 0; i < antibiotics.getLength(); i++) {
                 Element medicineElement = (Element) antibiotics.item(i);
-                Medicine medicine = buildAntibiotics(medicineElement);
-                medicines.add(medicine);
+                medicines.add(buildMedicine(medicineElement));
             }
-
             NodeList analgesics = root.getElementsByTagName("analgesics");
             for (int i = 0; i < analgesics.getLength(); i++) {
                 Element medicineElement = (Element) analgesics.item(i);
-                Medicine medicine = buildAnalgesics(medicineElement);
-                medicines.add(medicine);
+                medicines.add(buildMedicine(medicineElement));
             }
         } catch (SAXException | IOException | ParserConfigurationException e) {
             throw new ParserException(e.getMessage(), e.fillInStackTrace());
@@ -47,26 +43,21 @@ public class DomParser implements Parser {
         return medicines;
     }
 
-    private Antibiotics buildAntibiotics(Element medicineElement) {
-        Antibiotics medicine = new Antibiotics();
-        medicine.setId(medicineElement.getAttribute("id"));
-        String name = medicineElement.getAttribute("name");
-        if (name.compareTo("") != 0) {
-            medicine.setName(name);
+    private Medicine buildMedicine(Element medicineElement) {
+        if (medicineElement.getTagName().compareTo("antibiotics") == 0) {
+            Antibiotics medicine = new Antibiotics();
+            setMedicineParameters(medicine, medicineElement);
+            medicine.setGroupOfAntibiotics(getElementTextContent(medicineElement, "groupOfAntibiotics"));
+            return medicine;
         } else {
-            medicine.setName("No name(optional attribute)");
+            Analgesics medicine = new Analgesics();
+            setMedicineParameters(medicine, medicineElement);
+            medicine.setIsSteroid(getElementTextContent(medicineElement, "isSteroid"));
+            return medicine;
         }
-        CountryOfOrigin countryOfOrigin = CountryOfOrigin.
-                valueOf(getElementTextContent(medicineElement, "countryOfOrigin"));
-        medicine.setCountryOfOrigin(countryOfOrigin);
-        double price = Double.parseDouble(getElementTextContent(medicineElement, "price"));
-        medicine.setPrice(price);
-        medicine.setGroupOfAntibiotics(getElementTextContent(medicineElement, "groupOfAntibiotics"));
-        return medicine;
     }
 
-    private Analgesics buildAnalgesics(Element medicineElement) {
-        Analgesics medicine = new Analgesics();
+    private void setMedicineParameters(Medicine medicine, Element medicineElement) {
         medicine.setId(medicineElement.getAttribute("id"));
         String name = medicineElement.getAttribute("name");
         if (name.compareTo("") != 0) {
@@ -79,8 +70,6 @@ public class DomParser implements Parser {
         medicine.setCountryOfOrigin(countryOfOrigin);
         double price = Double.parseDouble(getElementTextContent(medicineElement, "price"));
         medicine.setPrice(price);
-        medicine.setIsSteroid(getElementTextContent(medicineElement, "isSteroid"));
-        return medicine;
     }
 
     private String getElementTextContent(Element element, String elementName) {
