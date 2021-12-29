@@ -10,19 +10,18 @@ import com.epam.xml.validator.XmlValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Director {
     private static final Logger LOGGER = LogManager.getLogger(Director.class);
     private static final String PATH = "src/test/resources/medicines.xml";
+    private final ParserFactory factory = new ParserFactory();
+    private final XmlValidator validator = new XmlValidator();
+    private List<Medicine> medicines;
 
     public List<Medicine> run() {
-        List<Medicine> medicines = new ArrayList<>();
         try {
-            ParserFactory factory = new ParserFactory();
             Parser parser = factory.create(ParserType.DOM);
-            XmlValidator validator = new XmlValidator();
             if (validator.validate(PATH)) {
                 medicines = parser.parse(PATH);
             } else {
